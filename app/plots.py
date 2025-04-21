@@ -7,7 +7,9 @@ def main():
     COMPOUNDS = {
                 "comp1": [1, 0, 0.5],
                 "comp2": [2, 0, 0.9],
-                "comp3": [3, 0, 0.33]
+                "comp3": [3, 0, 0.33],
+                "comp4": [4, 0, 0.2],
+                "comp5": [5, 0, 0.87],
                 }
 
     x_data_dict = {}
@@ -20,7 +22,7 @@ def main():
     fig, ax = plt.subplots()
     
     # Create two separate plot elements for comp1 and comp2
-    colors = ["r", "b", "g", "y", "p"]
+    colors = ["r", "b", "g", "y", "m"]
     
     plot_objs = []
     for i, key in enumerate(COMPOUNDS):
@@ -29,7 +31,7 @@ def main():
     
 
     # Set axis limits
-    ax.set_xlim(0, 10)
+    ax.set_xlim(0, len(x_data_dict) + 1)
     ax.set_ylim(0, 10)
 
     def init():
