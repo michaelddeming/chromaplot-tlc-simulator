@@ -3,26 +3,29 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 
 def main():
+    
     # COMPOUNDS --> "name": [x, y, rf]
     COMPOUNDS = {
-                "comp1": [1, 0, 0.5],
+                "solvent": [1, 0, 1],
                 "comp2": [2, 0, 0.9],
                 "comp3": [3, 0, 0.33],
                 "comp4": [4, 0, 0.2],
                 "comp5": [5, 0, 0.87],
+                "comp6": [6, 0, 0.62],
                 }
 
     x_data_dict = {}
     y_data_dict = {}
 
+    FRAME_COUNT = 200
     for key in COMPOUNDS:
-        x_data_dict[key], y_data_dict[key] = generate_data(COMPOUNDS[key], 10)
+        x_data_dict[key], y_data_dict[key] = generate_data(COMPOUNDS[key], FRAME_COUNT)
 
 
     fig, ax = plt.subplots()
     
     # Create two separate plot elements for comp1 and comp2
-    colors = ["r", "b", "g", "y", "m"]
+    colors = ["k", "b", "g", "y", "m", "r"]
     
     plot_objs = []
     for i, key in enumerate(COMPOUNDS):
@@ -31,8 +34,8 @@ def main():
     
 
     # Set axis limits
-    ax.set_xlim(0, len(x_data_dict) + 1)
-    ax.set_ylim(0, 10)
+    ax.set_xlim(0, len(x_data_dict) + (len(x_data_dict) * .1))
+    ax.set_ylim(0, FRAME_COUNT + (FRAME_COUNT * .1))
 
     def init():
         for obj in plot_objs:
@@ -49,7 +52,7 @@ def main():
     ani = FuncAnimation(
         fig,
         update,
-        frames=range(1, 11),
+        frames=range(1, FRAME_COUNT + 1),
         init_func=init,
         blit=True
     )
