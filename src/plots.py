@@ -8,15 +8,20 @@ from classes.compound import Compound
 
 def main():
 
+    # TEMP Compound Objects
+    COMPOUNDS_LIST = []
+    for i in range(6):
+        if i == 0:
+            COMPOUNDS_LIST.append(Compound(name= f"solvent", x_cord=i, y_cord=0, ret_fact= 1.0))
+        else:
+            rand_num = np.random.random()
+            print(rand_num)
+            COMPOUNDS_LIST.append(Compound(name= f"comp{i}", x_cord=i, y_cord=0, ret_fact= rand_num))
+
     # COMPOUNDS --> "name": [x, y, rf]
-    COMPOUNDS = {
-        "solvent": [1, 0, 1],
-        "comp2": [2, 0, 0.9],
-        "comp3": [3, 0, 0.33],
-        "comp4": [4, 0, 0.2],
-        "comp5": [5, 0, 0.87],
-        "comp6": [6, 0, 0.62],
-    }
+    COMPOUNDS = {compound.name : compound.get_data() for compound in COMPOUNDS_LIST}
+    print(COMPOUNDS)
+    
 
     x_data_dict = {}
     y_data_dict = {}
