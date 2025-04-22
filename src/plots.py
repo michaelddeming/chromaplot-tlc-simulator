@@ -41,7 +41,7 @@ def main():
         plot_objs.append(ax.plot([], [], f"{color}o")[0])
 
     # Set axis limits
-    ax.set_xlim(0, len(x_data_dict) + (len(x_data_dict) * 0.1))
+    ax.set_xlim(0, len(x_data_dict) -  1 + (len(x_data_dict) * 0.1))
     ax.set_ylim(0, FRAME_COUNT + (FRAME_COUNT * 0.1))
 
     def init():
