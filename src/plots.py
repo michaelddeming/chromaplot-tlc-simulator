@@ -15,20 +15,21 @@ def main():
             COMPOUNDS_LIST.append(Compound(name= f"solvent", x_cord=i, y_cord=0, ret_fact= 1.0))
         else:
             rand_num = np.random.random()
-            print(rand_num)
             COMPOUNDS_LIST.append(Compound(name= f"comp{i}", x_cord=i, y_cord=0, ret_fact= rand_num))
 
     # COMPOUNDS --> "name": [x, y, rf]
     COMPOUNDS = {compound.name : compound.get_data() for compound in COMPOUNDS_LIST}
-    print(COMPOUNDS)
     
 
     x_data_dict = {}
     y_data_dict = {}
 
-    FRAME_COUNT = 150
+    FRAME_COUNT = 200
     for key in COMPOUNDS:
-        x_data_dict[key], y_data_dict[key] = generate_data(COMPOUNDS[key], FRAME_COUNT)
+        if key != "solvent":
+            x_data_dict[key], y_data_dict[key] = generate_data(COMPOUNDS[key], FRAME_COUNT)
+        else:
+            x_data_dict[key], y_data_dict[key] = generate_data(COMPOUNDS[key], FRAME_COUNT, solvent=True)
 
     fig, ax = plt.subplots()
 
@@ -66,13 +67,26 @@ def main():
     plt.show()
 
 
-def generate_data(compound: list, data_quantity: int):
+def generate_data(compound: list, data_quantity: int, solvent=False):
     if compound:
+
+
+        
         x_data = []
         y_data = []
         for _ in range(data_quantity):
-            x_data.append(compound[0])
+            
+            if not solvent:
+                # x buffer element
+                buffer_factor = 0.05 / np.sqrt(compound[0] + 1e-5) # within 10% of original x_data
+                x_buffer_low = compound[0] - (compound[0] * (buffer_factor))
+                x_buffer_high = compound[0] + (compound[0] * (buffer_factor))
+                x_buffer = np.random.uniform(low=x_buffer_low, high=x_buffer_high)
+                x_data.append(x_buffer)
+            else:
+                x_data.append(compound[0])
             y_data.append(compound[1])
+
             compound = [compound[0], compound[1] + compound[2], compound[2]]
         return x_data, y_data
     raise ValueError("No Compound")
