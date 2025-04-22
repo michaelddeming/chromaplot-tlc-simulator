@@ -1,46 +1,48 @@
+# matplotlib Objects
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.animation import FuncAnimation
 
+# Custom Objects
+from classes.compound import Compound 
+
 def main():
-    
+
     # COMPOUNDS --> "name": [x, y, rf]
     COMPOUNDS = {
-                "solvent": [1, 0, 1],
-                "comp2": [2, 0, 0.9],
-                "comp3": [3, 0, 0.33],
-                "comp4": [4, 0, 0.2],
-                "comp5": [5, 0, 0.87],
-                "comp6": [6, 0, 0.62],
-                }
+        "solvent": [1, 0, 1],
+        "comp2": [2, 0, 0.9],
+        "comp3": [3, 0, 0.33],
+        "comp4": [4, 0, 0.2],
+        "comp5": [5, 0, 0.87],
+        "comp6": [6, 0, 0.62],
+    }
 
     x_data_dict = {}
     y_data_dict = {}
 
-    FRAME_COUNT = 200
+    FRAME_COUNT = 150
     for key in COMPOUNDS:
         x_data_dict[key], y_data_dict[key] = generate_data(COMPOUNDS[key], FRAME_COUNT)
 
-
     fig, ax = plt.subplots()
-    
+
     # Create two separate plot elements for comp1 and comp2
     colors = ["k", "b", "g", "y", "m", "r"]
-    
+
     plot_objs = []
     for i, key in enumerate(COMPOUNDS):
         color = colors[i % len(colors)]
         plot_objs.append(ax.plot([], [], f"{color}o")[0])
-    
 
     # Set axis limits
-    ax.set_xlim(0, len(x_data_dict) + (len(x_data_dict) * .1))
-    ax.set_ylim(0, FRAME_COUNT + (FRAME_COUNT * .1))
+    ax.set_xlim(0, len(x_data_dict) + (len(x_data_dict) * 0.1))
+    ax.set_ylim(0, FRAME_COUNT + (FRAME_COUNT * 0.1))
 
     def init():
         for obj in plot_objs:
             obj.set_data([], [])
-        
+
         return plot_objs
 
     def update(frame):
@@ -50,17 +52,14 @@ def main():
         return plot_objs
 
     ani = FuncAnimation(
-        fig,
-        update,
-        frames=range(1, FRAME_COUNT + 1),
-        init_func=init,
-        blit=True
+        fig, update, frames=range(1, FRAME_COUNT + 1), init_func=init, blit=True
     )
 
     plt.title("Thin Layer Chromatography Simulation")
     plt.xlabel("Compounds")
     plt.ylabel("Distance (cm)")
     plt.show()
+
 
 def generate_data(compound: list, data_quantity: int):
     if compound:
@@ -72,6 +71,7 @@ def generate_data(compound: list, data_quantity: int):
             compound = [compound[0], compound[1] + compound[2], compound[2]]
         return x_data, y_data
     raise ValueError("No Compound")
+
 
 if __name__ == "__main__":
     main()
