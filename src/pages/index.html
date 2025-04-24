@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="header-section">
+        <h1>Thin Layer Chromatography Simulator</h1>
+    </div>
+
+    <div class="content-section" id="content-section-1">
+
+        <div class="compound-selection-section" id="compound-selection-section">
+
+            <button id="add-compound-btn">Add Compound</button>
+
+        </div>
+
+        <div class="graph-visualization">
+
+        </div>
+
+    </div>
+
+    <script>
+        let AddCompoundBtn = document.getElementById("add-compound-btn")
+
+        AddCompoundBtn.addEventListener("click", function() {
+
+            let NewCompoundContainer = document.createElement("div")
+
+            let NewCompoundNameEntry =  document.createElement("input")
+
+            let NewCompoundDataEntry =  document.createElement("input")
+
+            let NewCompoundDeleteBtn = document.createElement("button")
+            NewCompoundDeleteBtn.textContent = "Remove Compound"
+            
+            let CompoundSelectionSection = document.getElementById("compound-selection-section")
+
+            NewCompoundContainer.appendChild(NewCompoundNameEntry)
+            NewCompoundContainer.appendChild(NewCompoundDataEntry)
+            NewCompoundContainer.appendChild(NewCompoundDeleteBtn)
+            
+            CompoundSelectionSection.appendChild(NewCompoundContainer)
+        
+        })
+        
+
+
+    </script>
+
+</body>
+</html>
