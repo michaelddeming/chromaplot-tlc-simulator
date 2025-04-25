@@ -25,31 +25,49 @@
     </div>
 
     <script>
+        let count = 0
         let AddCompoundBtn = document.getElementById("add-compound-btn")
 
         AddCompoundBtn.addEventListener("click", function() {
-
-            let NewCompoundContainer = document.createElement("div")
-
-            let NewCompoundNameEntry =  document.createElement("input")
-
-            let NewCompoundDataEntry =  document.createElement("input")
-
-            let NewCompoundDeleteBtn = document.createElement("button")
-            NewCompoundDeleteBtn.textContent = "Remove Compound"
             
-            let CompoundSelectionSection = document.getElementById("compound-selection-section")
-
-            NewCompoundContainer.appendChild(NewCompoundNameEntry)
-            NewCompoundContainer.appendChild(NewCompoundDataEntry)
-            NewCompoundContainer.appendChild(NewCompoundDeleteBtn)
             
-            CompoundSelectionSection.appendChild(NewCompoundContainer)
+            if (count > 4) {
+                AddCompoundBtn.setAttribute("disabled", true)
+            }
+            else {
+                count += 1
+                let NewCompoundContainer = document.createElement("div")
+
+                let NewCompoundNameEntry =  document.createElement("input")
+
+                let NewCompoundDataEntry =  document.createElement("input")
+
+                let NewCompoundDeleteBtn = document.createElement("button")
+                NewCompoundDeleteBtn.textContent = "Remove Compound"
+    
+
+                let CompoundSelectionSection = document.getElementById("compound-selection-section")
+
+                NewCompoundContainer.appendChild(NewCompoundNameEntry)
+                NewCompoundContainer.appendChild(NewCompoundDataEntry)
+                NewCompoundContainer.appendChild(NewCompoundDeleteBtn)
+
+                CompoundSelectionSection.appendChild(NewCompoundContainer)
+
+                NewCompoundDeleteBtn.addEventListener("click", function() {
+
+                    this.parentElement.remove()
+                    count -= 1
+                    AddCompoundBtn.removeAttribute("disabled")
+
+                })
+
+            }
+
+
         
         })
         
-
-
     </script>
 
 </body>
