@@ -1,0 +1,31 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+    background-color:#dddddd;
+    color: #2e2e2e;
+
+}
+
+.header-section {
+    display: flex;
+    justify-content: center;
+
+}
+
+
+
+.compound-container {
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
+.compound-name-entry {
+    margin-right: 5px;
+}
+
+.compound-data-entry {
+    margin-right: 5px;
+}
+
+.compound-remove-btn {
+    margin-right: 5px;
+}

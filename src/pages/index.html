@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/src/css/styles.css">
     <title>Document</title>
 </head>
 <body>
@@ -15,7 +16,13 @@
         <div class="compound-selection-section" id="compound-selection-section">
 
             <button id="add-compound-btn">Add Compound</button>
+            
 
+        </div>
+
+        <div class="run-simulation-btn-section">
+            <button id="run-simulation-btn">Run Simulation</button>
+            <button id="randomize-simulation-btn">Randomize Simulation</button>
         </div>
 
         <div class="graph-visualization">
@@ -26,43 +33,69 @@
 
     <script>
         let count = 0
-        let AddCompoundBtn = document.getElementById("add-compound-btn")
+        
+        RunSimulationBtn = document.getElementById("run-simulation-btn")
+        RandomizeSimulationBtn = document.getElementById("randomize-simulation-btn")
 
+        RunSimulationBtn.setAttribute("disabled", true)
+        RandomizeSimulationBtn.setAttribute("disabled", true)
+
+        let AddCompoundBtn = document.getElementById("add-compound-btn")
+        
         AddCompoundBtn.addEventListener("click", function() {
-            
-            
-            if (count > 4) {
+            count += 1
+
+            if (count >= 5) {
                 AddCompoundBtn.setAttribute("disabled", true)
             }
-            else {
-                count += 1
-                let NewCompoundContainer = document.createElement("div")
+        
+                
 
-                let NewCompoundNameEntry =  document.createElement("input")
+            RunSimulationBtn.removeAttribute("disabled")
+            RandomizeSimulationBtn.removeAttribute("disabled")
 
-                let NewCompoundDataEntry =  document.createElement("input")
+            let NewCompoundContainer = document.createElement("div")
+            NewCompoundContainer.className = "compound-container"
 
-                let NewCompoundDeleteBtn = document.createElement("button")
-                NewCompoundDeleteBtn.textContent = "Remove Compound"
-    
+            let NewCompoundNameEntry =  document.createElement("input")
+            NewCompoundNameEntry.className = "compound-name-entry"
+            NewCompoundNameEntry.placeholder = "Description"
 
-                let CompoundSelectionSection = document.getElementById("compound-selection-section")
+            let NewCompoundDataEntry =  document.createElement("input")
+            NewCompoundDataEntry.className = "compound-data-entry"
+            NewCompoundDataEntry.placeholder = "Retention Factor"
 
-                NewCompoundContainer.appendChild(NewCompoundNameEntry)
-                NewCompoundContainer.appendChild(NewCompoundDataEntry)
-                NewCompoundContainer.appendChild(NewCompoundDeleteBtn)
+            let NewCompoundDeleteBtn = document.createElement("button")
+            NewCompoundDeleteBtn.textContent = "Remove Compound"
+            NewCompoundDeleteBtn.className = "compound-remove-btn"
 
-                CompoundSelectionSection.appendChild(NewCompoundContainer)
 
-                NewCompoundDeleteBtn.addEventListener("click", function() {
+            let CompoundSelectionSection = document.getElementById("compound-selection-section")
 
-                    this.parentElement.remove()
-                    count -= 1
-                    AddCompoundBtn.removeAttribute("disabled")
+            NewCompoundContainer.appendChild(NewCompoundNameEntry)
+            NewCompoundContainer.appendChild(NewCompoundDataEntry)
+            NewCompoundContainer.appendChild(NewCompoundDeleteBtn)
 
-                })
+            CompoundSelectionSection.appendChild(NewCompoundContainer)
 
-            }
+            
+
+            NewCompoundDeleteBtn.addEventListener("click", function() {
+
+                this.parentElement.remove()
+                count -= 1
+                
+                if (count < 1) 
+                {
+
+                
+                RunSimulationBtn.setAttribute("disabled", true)
+                RandomizeSimulationBtn.setAttribute("disabled", true)
+                }          
+                
+                AddCompoundBtn.removeAttribute("disabled")})
+        
+
 
 
         
