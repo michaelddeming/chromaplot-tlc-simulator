@@ -8,24 +8,37 @@ body {
 .header-section {
     display: flex;
     justify-content: center;
-
+    align-items: center;
+    text-align: center;
 }
 
 
+.content-section-main {
+
+    display: flex;
+    justify-content: space-between;
+
+}
+
+#content-section-left {
+    margin-right: 2%;
+    margin-left: 25%;
+
+}
+#content-section-right {
+    margin-right: 25%;
+    margin-left: 2%;
+}
 
 .compound-container {
     margin-top: 7px;
     margin-bottom: 7px;
 }
 
-.compound-name-entry {
+.compound-entry {
     margin-right: 5px;
 }
 
-.compound-data-entry {
-    margin-right: 5px;
-}
-
-.compound-remove-btn {
-    margin-right: 5px;
+#compound-form-buttons {
+    margin-top: 10px;
 }

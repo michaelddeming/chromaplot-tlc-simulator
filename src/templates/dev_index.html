@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -21,8 +21,9 @@
         </div>
 
         <div class="run-simulation-btn-section">
-            <button id="run-simulation-btn">Run Simulation</button>
-            <button id="randomize-simulation-btn">Randomize Simulation</button>
+            <button onclick="submitForm()" id="run-simulation-btn">Run Simulation</button>
+            
+            <button onclick="randomizeForm()" id="randomize-simulation-btn">Randomize Simulation</button>
         </div>
 
         <div class="graph-visualization">
@@ -56,7 +57,13 @@
 
             let NewCompoundContainer = document.createElement("div")
             NewCompoundContainer.className = "compound-container"
+            
+            let NewCompoundContainerForm = document.createElement("form")
+            NewCompoundContainerForm.id = "compounds-form"
+            NewCompoundContainerForm.action = "/simulate"
+            NewCompoundContainerForm.method = "post"
 
+            
             let NewCompoundNameEntry =  document.createElement("input")
             NewCompoundNameEntry.className = "compound-name-entry"
             NewCompoundNameEntry.placeholder = "Description"
@@ -76,7 +83,8 @@
             NewCompoundContainer.appendChild(NewCompoundDataEntry)
             NewCompoundContainer.appendChild(NewCompoundDeleteBtn)
 
-            CompoundSelectionSection.appendChild(NewCompoundContainer)
+            NewCompoundContainerForm.appendChild(NewCompoundContainer)
+            CompoundSelectionSection.appendChild(NewCompoundContainerForm)
 
             
 
@@ -94,14 +102,12 @@
                 }          
                 
                 AddCompoundBtn.removeAttribute("disabled")})
-        
-
-
-
-        
         })
+        function submitForm() {
+            document.getElementById("compounds-form").submit()
+        }
         
     </script>
 
 </body>
-</html>
+</html> -->
