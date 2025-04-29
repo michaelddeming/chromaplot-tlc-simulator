@@ -24,7 +24,7 @@ def main():
     x_data_dict = {}
     y_data_dict = {}
 
-    FRAME_COUNT = 200
+    FRAME_COUNT = 100
     for key in COMPOUNDS:
         if key != "solvent":
             x_data_dict[key], y_data_dict[key] = generate_data(COMPOUNDS[key], FRAME_COUNT)
@@ -54,11 +54,12 @@ def main():
     def update(frame):
         # Update both compounds at the same time
         for i, key in enumerate(COMPOUNDS):
-            plot_objs[i].set_data(x_data_dict[key][:frame], y_data_dict[key][:frame])
+            plot_objs[i].set_data(x_data_dict[key][(frame - 10):frame], y_data_dict[key][(frame - 10):frame])
         return plot_objs
 
+    TOTAL_FRAMES = FRAME_COUNT + 25
     ani = FuncAnimation(
-        fig, update, frames=range(1, FRAME_COUNT + 1), init_func=init, blit=True
+        fig, update, frames=range(1, TOTAL_FRAMES + 1), init_func=init, blit=True
     )
 
     plt.title("Thin Layer Chromatography Simulation")
@@ -88,6 +89,19 @@ def generate_data(compound: list, data_quantity: int, solvent=False):
             y_data.append(compound[1])
 
             compound = [compound[0], compound[1] + compound[2], compound[2]]
+
+        x_data_final = x_data[-1] 
+        y_data_final = y_data[-1]
+
+        x_buffer_end = [x_data_final] * (data_quantity // 4)
+        y_buffer_end = [y_data_final] * (data_quantity // 4)
+
+        x_data += x_buffer_end
+        y_data += y_buffer_end
+
+        print(x_data)
+        print(y_data)
+
         return x_data, y_data
     raise ValueError("No Compound")
 
