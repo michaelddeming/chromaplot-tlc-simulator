@@ -10,25 +10,22 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
+   
 }
 
 
 .content-section-main {
 
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+
+    padding: 10%;
+    border: 8px solid #2e2e2e;
 
 }
 
-#content-section-left {
-    margin-right: 2%;
-    margin-left: 25%;
-
-}
-#content-section-right {
-    margin-right: 25%;
-    margin-left: 2%;
-}
 
 .compound-container {
     margin-top: 7px;
