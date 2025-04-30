@@ -18,7 +18,7 @@ class ChromaPlot:
         self.compounds_formatted = {}
         self.x_data_dict = {}
         self.y_data_dict = {}
-        self.FRAME_COUNT = 200
+        self.FRAME_COUNT = 100
 
     
     def format_compounds_list(self):
@@ -67,16 +67,20 @@ class ChromaPlot:
         def update(frame):
             # Update both compounds at the same time
             for i, key in enumerate(self.compounds_formatted):
-                plot_objs[i].set_data(self.x_data_dict[key][:frame], self.y_data_dict[key][:frame])
+                if key == "solvent":
+                    plot_objs[i].set_data(self.x_data_dict[key][:frame], self.y_data_dict[key][:frame])
+                else:
+                    plot_objs[i].set_data(self.x_data_dict[key][(frame - 10):frame], self.y_data_dict[key][(frame - 10):frame])
             return plot_objs
 
+        TOTAL_FRAMES = self.FRAME_COUNT + 25
         ani = FuncAnimation(
-            fig, update, frames=range(1, self.FRAME_COUNT + 1), init_func=init, blit=True
+            fig, update, frames=range(1, TOTAL_FRAMES + 1), init_func=init, blit=True
         )
 
         plt.title("Thin Layer Chromatography Simulation")
         plt.xlabel("Compounds")
-        plt.ylabel("Distance (cm)")
+        plt.ylabel("Distance")
 
         with tempfile.NamedTemporaryFile(suffix=".gif", delete=False) as tmpfile:
             ani.save(tmpfile.name, writer="pillow")
@@ -100,9 +104,9 @@ class ChromaPlot:
                 
                 if not solvent:
                     # x buffer element
-                    buffer_factor = 0.05 / np.sqrt(compound[0] + 1e-5) # within 10% of original x_data
-                    x_buffer_low = compound[0] - (compound[0] * (buffer_factor))
-                    x_buffer_high = compound[0] + (compound[0] * (buffer_factor))
+                    buffer_factor = 0.05
+                    x_buffer_low = compound[0] - (buffer_factor)
+                    x_buffer_high = compound[0] + (buffer_factor)
                     x_buffer = np.random.uniform(low=x_buffer_low, high=x_buffer_high)
                     x_data.append(x_buffer)
                 else:
@@ -110,6 +114,14 @@ class ChromaPlot:
                 y_data.append(compound[1])
 
                 compound = [compound[0], compound[1] + compound[2], compound[2]]
+            x_data_final = x_data[-1] 
+            y_data_final = y_data[-1]
+
+            x_buffer_end = [x_data_final] * (data_quantity // 4)
+            y_buffer_end = [y_data_final] * (data_quantity // 4)
+
+            x_data += x_buffer_end
+            y_data += y_buffer_end
             return x_data, y_data
         raise ValueError("No Compound")
             

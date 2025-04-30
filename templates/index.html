@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
     <title>Document</title>
 </head>
 <body>
@@ -20,7 +20,7 @@
 
         
 
-        <form action="/submit" method="post">
+        <form id="compounds-form">
             <label>Compound Entry</label>
 
 
@@ -58,8 +58,10 @@
             <div class="buttons-container" id="compound-form-buttons">
                 <button id="run-simulation-btn" type="submit">Run Simulation</button>
                 <button id="randomize-simulation-btn">Randomize Simulation</button>
+                
             </div>
         </form>
+        <label id="loading-label">Status: None</label>
 
 
 
@@ -74,5 +76,25 @@
     </div>
 
 </div>
-    
+<script>
+    const LoadingLabel = document.getElementById("loading-label")
+    document.getElementById("compounds-form").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        LoadingLabel.textContent = "Status: Loading ChromaPlot..."
+        const formData = new FormData(this);
+        const response = await fetch("/submit", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+        document.getElementById("chroma-plot").src = `data:image/gif;base64,${data.image}`;
+        LoadingLabel.textContent = "Status: Finished!"
+
+        
+        
+    });
+</script>
+</body>
     

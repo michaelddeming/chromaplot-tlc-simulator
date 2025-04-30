@@ -2,9 +2,11 @@ from typing import List, Optional
 
 from fastapi import FastAPI
 from fastapi import Form
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import StreamingResponse
+
+import base64
 
 from pydantic import BaseModel, Field
 
@@ -62,7 +64,9 @@ def submit_form(
 
     chroma_plot = ChromaPlot(compounds=compounds)
     buffer = chroma_plot.generate_chromaplot()
-    return StreamingResponse(buffer, media_type="image/gif")
+    img_bytes = buffer.getvalue()
+    base64_img = base64.b64encode(img_bytes).decode("utf-8")
+    return JSONResponse(content={"image": base64_img})
     
 
 
