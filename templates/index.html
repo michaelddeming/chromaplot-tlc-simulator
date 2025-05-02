@@ -26,33 +26,33 @@
 
             <div class="compound-container" id="compound-container-1">
                 <label for="compound-entry-description-1">Compound 1</label><br>
-                <input class="compound-entry" id="compound-entry-description-1" type="text" placeholder="Description" name="compound1_description"> 
-                <input class="compound-entry" id="compound-entry-rf-1" type="number" min="0" max="1" step="0.01" placeholder="Rf" name="compound1_rf"> 
+                <input class="compound-entry-description" id="compound-entry-description-1" type="text" placeholder="Description" name="compound1_description"> 
+                <input class="compound-entry-rf" id="compound-entry-rf-1" type="number" min="0" max="1" step="0.01" placeholder="Rf" name="compound1_rf"> 
             </div> 
 
 
             <div class="compound-container" id="compound-container-2">
                 <label for="compound-entry-description-2">Compound 2</label><br>
-                <input class="compound-entry" id="compound-entry-description-2" type="text" placeholder="Description" name="compound2_description"> 
-                <input class="compound-entry" id="compound-entry-rf-2" type="number" min="0" max="1" step="0.01" placeholder="Rf" name="compound2_rf"> 
+                <input class="compound-entry-description" id="compound-entry-description-2" type="text" placeholder="Description" name="compound2_description"> 
+                <input class="compound-entry-rf" id="compound-entry-rf-2" type="number" min="0" max="1" step="0.01" placeholder="Rf" name="compound2_rf"> 
             </div> 
 
             <div class="compound-container" id="compound-container-3">
                 <label for="compound-entry-description-3">Compound 3</label><br>
-                <input class="compound-entry" id="compound-entry-description-3" type="text" placeholder="Description" name="compound3_description"> 
-                <input class="compound-entry" id="compound-entry-rf-3" type="number" min="0" max="1" step="0.01" placeholder="Rf" name="compound3_rf"> 
+                <input class="compound-entry-description" id="compound-entry-description-3" type="text" placeholder="Description" name="compound3_description"> 
+                <input class="compound-entry-rf" id="compound-entry-rf-3" type="number" min="0" max="1" step="0.01" placeholder="Rf" name="compound3_rf"> 
             </div> 
 
             <div class="compound-container" id="compound-container-4">
                 <label for="compound-entry-description-4">Compound 4</label><br>
-                <input class="compound-entry" id="compound-entry-description-4" type="text" placeholder="Description" name="compound4_description"> 
-                <input class="compound-entry" id="compound-entry-rf-4" type="number" min="0" max="1" step="0.01" placeholder="Rf" name="compound4_rf"> 
+                <input class="compound-entry-description" id="compound-entry-description-4" type="text" placeholder="Description" name="compound4_description"> 
+                <input class="compound-entry-rf" id="compound-entry-rf-4" type="number" min="0" max="1" step="0.01" placeholder="Rf" name="compound4_rf"> 
             </div> 
 
             <div class="compound-container" id="compound-container-5">
                 <label for="compound-entry-description-5">Compound 5</label><br>
-                <input class="compound-entry" id="compound-entry-description-5" type="text" placeholder="Description" name="compound5_description"> 
-                <input class="compound-entry" id="compound-entry-rf-5" type="number" min="0" max="1" step="0.01" placeholder="Rf" name="compound5_rf"> 
+                <input class="compound-entry-description" id="compound-entry-description-5" type="text" placeholder="Description" name="compound5_description"> 
+                <input class="compound-entry-rf" id="compound-entry-rf-5" type="number" min="0" max="1" step="0.01" placeholder="Rf" name="compound5_rf"> 
             </div> 
 
             <div class="buttons-container" id="compound-form-buttons">
@@ -77,23 +77,50 @@
 
 </div>
 <script>
-    const LoadingLabel = document.getElementById("loading-label")
+    const LoadingLabel = document.getElementById("loading-label");
+    
     document.getElementById("compounds-form").addEventListener("submit", async function(event) {
         event.preventDefault();
-
-        LoadingLabel.textContent = "Status: Loading ChromaPlot..."
-        const formData = new FormData(this);
-        const response = await fetch("/submit", {
-            method: "POST",
-            body: formData
-        });
-
-        const data = await response.json();
-        document.getElementById("chroma-plot").src = `data:image/gif;base64,${data.image}`;
-        LoadingLabel.textContent = "Status: Finished!"
-
-        
-        
+    
+        try {
+            const compound_entries = document.querySelectorAll(".compound-entry-description, .compound-entry-rf");
+            const entry_desc_set = new Set();
+    
+            for (const entry of compound_entries) {
+                if (entry.classList.contains("compound-entry-description")) {
+                    if (entry.value.trim() === "") {
+                        LoadingLabel.textContent = "Status: Error -> Blank Compound Description!";
+                        return;
+                    } else {
+                        entry_desc_set.add(entry.value.trim());
+                    }
+                } else if (entry.classList.contains("compound-entry-rf")) {
+                    if (entry.value.trim() === "") {
+                        LoadingLabel.textContent = "Status: Error -> Blank Compound Rf!";
+                        return;
+                    }
+                }
+            }
+            if (entry_desc_set.size !== 5) {
+                LoadingLabel.textContent = "Status: Error -> Duplicate Compound Description!";
+                return;
+            }
+    
+            // Submit form
+            LoadingLabel.textContent = "Status: Loading ChromaPlot...";
+            const formData = new FormData(this);
+            const response = await fetch("/submit", {
+                method: "POST",
+                body: formData
+            });
+    
+            const data = await response.json();
+            document.getElementById("chroma-plot").src = `data:image/gif;base64,${data.image}`;
+            LoadingLabel.textContent = "Status: Finished!";
+        } catch (error) {
+            console.error(error);
+            LoadingLabel.textContent = "Status: Error -> Submission failed!";
+        }
     });
 </script>
 </body>
