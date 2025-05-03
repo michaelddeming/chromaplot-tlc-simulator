@@ -61,8 +61,10 @@ def submit_form(
     comp5 = Compound(f"{compound5_description}", 5, 0, compound5_rf)
 
     compounds = [solvent, comp1, comp2, comp3, comp4, comp5]
+    compound_descs = [comp.name for comp in compounds]
 
     chroma_plot = ChromaPlot(compounds=compounds)
+    chroma_plot.set_x_ticks(compound_descs)
     buffer = chroma_plot.generate_chromaplot()
     img_bytes = buffer.getvalue()
     base64_img = base64.b64encode(img_bytes).decode("utf-8")

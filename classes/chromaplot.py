@@ -19,6 +19,7 @@ class ChromaPlot:
         self.x_data_dict = {}
         self.y_data_dict = {}
         self.FRAME_COUNT = 100
+        self.x_ticks = ["solvent", "comp1", "comp2", "comp3", "comp4", "comp5"]
 
     
     def format_compounds_list(self):
@@ -53,6 +54,9 @@ class ChromaPlot:
         for i, key in enumerate(self.compounds_formatted):
             color = colors[i % len(colors)]
             plot_objs.append(ax.plot([], [], f"{color}o")[0])
+
+        # set x-axis tick marks to be self.x_ticks for ticks 0 to 5 inclusive.
+        ax.set_xticks([val for val in range(6)], self.x_ticks)
 
         # Set axis limits
         ax.set_xlim(0, len(self.x_data_dict) -  1 + (len(self.x_data_dict) * 0.1))
@@ -124,4 +128,12 @@ class ChromaPlot:
             y_data += y_buffer_end
             return x_data, y_data
         raise ValueError("No Compound")
-            
+    
+    def set_x_ticks(self, x_ticks: list) -> None:
+        if isinstance(x_ticks, list):
+            if len(x_ticks) == 6:
+                self.x_ticks = x_ticks
+            else:
+                raise ValueError("Error: minimum 6 x-ticks required, 'solvent' inclusive.")
+        else:
+            raise ValueError("Error: x-ticks as list required.")
