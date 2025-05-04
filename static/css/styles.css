@@ -44,4 +44,17 @@ body {
 
 #loading-label {
     display: flex;
+    margin-top: 3%;
+}
+
+@media (max-width: 800px) {
+    
+
+
+    #chroma-plot {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 25px;
+    }
+    
 }
