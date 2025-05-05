@@ -4,7 +4,6 @@ from fastapi import FastAPI
 from fastapi import Form
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import StreamingResponse
 
 import base64
 
@@ -70,5 +69,3 @@ def submit_form(
     base64_img = base64.b64encode(img_bytes).decode("utf-8")
     return JSONResponse(content={"image": base64_img})
     
-
-
