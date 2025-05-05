@@ -1,12 +1,10 @@
-from typing import List, Optional
-
 from fastapi import FastAPI
 from fastapi import Form
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 
 import base64
-
+import uuid
 from pydantic import BaseModel, Field
 
 from classes.compound import Compound
@@ -62,10 +60,33 @@ def submit_form(
     compounds = [solvent, comp1, comp2, comp3, comp4, comp5]
     compound_descs = [comp.name for comp in compounds]
 
+    # generate a unique id for chromaplot
+    plot_id = str(uuid.uuid4())
+
+    # generate chromaplot 
     chroma_plot = ChromaPlot(compounds=compounds)
     chroma_plot.set_x_ticks(compound_descs)
     buffer = chroma_plot.generate_chromaplot()
     img_bytes = buffer.getvalue()
+
+    with open(f"user_plots/{plot_id}.gif", "wb") as file:
+        file.write(img_bytes)
     base64_img = base64.b64encode(img_bytes).decode("utf-8")
-    return JSONResponse(content={"image": base64_img})
+    return JSONResponse(content={"image": base64_img, "plot_id": plot_id})
     
+@app.get("/download/{plot_id}", response_class=FileResponse)
+def download_chomaplot(plot_id: str):
+
+    # open and try to get the plot from dir
+    try:
+        user_plot_file_path = f"user_plots/{plot_id}.gif"
+        return FileResponse(
+            path=user_plot_file_path, 
+            media_type="image/gif", 
+            filename=f"{plot_id}.gif")
+    except FileNotFoundError:
+        return None
+
+
+
+

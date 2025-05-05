@@ -116,10 +116,18 @@
                 method: "POST",
                 body: formData
             });
-    
+            
             const data = await response.json();
             document.getElementById("chroma-plot").src = `data:image/gif;base64,${data.image}`;
             LoadingLabel.textContent = "Status: Finished!";
+
+            // allow for download of plot
+            document.getElementById("download-chroma-plot-btn").addEventListener("click", function(event) {
+                window.location.href = `/download/${data.plot_id}`;
+            });
+
+
+
         } catch (error) {
             console.error(error);
             LoadingLabel.textContent = "Status: Error -> Submission failed!";
