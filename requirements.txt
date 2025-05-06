@@ -9,6 +9,7 @@ h11==0.16.0
 idna==3.10
 kiwisolver==1.4.8
 matplotlib==3.10.1
+multipart==1.2.1
 numpy==2.2.5
 packaging==25.0
 pillow==11.2.1
